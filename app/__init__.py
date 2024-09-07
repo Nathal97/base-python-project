@@ -2,14 +2,26 @@
 
 # app = Flask(__name__)
 
-# from app import routes  # Importation des routes 
+# from app import routes  
 from flask import Flask
-from .routes import init_routes
+from flask_sqlalchemy import SQLAlchemy
+from .controllers import init_routes
+
+
+# instance de SQLAlchemy
+db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
     
-    # Initialiser les routes
+    # Config bdd
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # Init bdd
+    db.init_app(app)
+
+    # Init routes
     init_routes(app)
 
     return app
