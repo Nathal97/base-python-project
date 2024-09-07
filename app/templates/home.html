@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traduction de Texte</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <a href="{{ url_for('login') }}">Connexion</a>
+    <a href="{{ url_for('register') }}">Register</a>
+
+    <h1>Traduction de Texte</h1>
+    <form id="translate-form">
+        <label for="text">Texte à traduire :</label>
+        <textarea id="text" name="text" rows="4" cols="50"></textarea><br><br>
+        
+        <label for="lang">Langue cible :</label>
+        <select id="lang" name="lang">
+            <option value="fr">Français</option>
+            <option value="es">Espagnol</option>
+            <option value="de">Allemand</option>
+            <!-- Ajoute d'autres langues si nécessaire -->
+        </select><br><br>
+        
+        <button type="button" onclick="translateText()">Traduire</button>
+    </form>
+
+    <h2>Texte traduit :</h2>
+    <p id="translated-text"></p>
+
+    <script>
+        function translateText() {
+            const text = document.getElementById('text').value;
+            const lang = document.getElementById('lang').value;
+
+            fetch(`/translate?text=${encodeURIComponent(text)}&lang=${lang}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('translated-text').textContent = data.translated_text;
+                })
+                .catch(error => console.error('Erreur:', error));
+        }
+    </script>
+
+</body>
+</html>
